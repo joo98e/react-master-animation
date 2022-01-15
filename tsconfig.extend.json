@@ -1,12 +1,12 @@
 {
   "compilerOptions":{
-     "baseUrl":"./src",
+     "baseUrl":".",
      "paths":{
         "@app":[
-           "./App.tsx"
+           "./src/App.tsx"
         ],
         "@ui/*":[
-           "./Assets/UI/*"
+           "./src/Assets/UI/*"
         ]
      }
   }
