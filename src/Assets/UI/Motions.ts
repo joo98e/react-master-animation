@@ -37,3 +37,21 @@ export const MotionCircle = styled(motion.div)`
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     background-color: whitesmoke;
 `;
+
+export const MotionGrid = styled(motion.div)`
+    display : grid;
+    width : 50vw;
+    grid-template-columns: repeat(3, 1fr);
+    gap : 10px;
+    div:first-child,
+    div:last-child{
+        grid-column: span 2;
+    }
+`;
+
+export const MotionNormalBox = styled(motion.div)`
+    height : 200px;
+    border-radius :40px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+`;

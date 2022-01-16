@@ -12,15 +12,12 @@ module.exports = {
                 }, ],
             },
         },
-        alias: {
-            '@ui': path.resolve(__dirname, 'src/Assets/UI/'),
-        },
     },
     plugins: [{
         plugin: CracoAlias,
         options: {
             source: 'tsconfig',
-            baseUrl: './src',
+            baseUrl: '.',
             tsConfigPath: './tsconfig.extend.json',
         },
     }]

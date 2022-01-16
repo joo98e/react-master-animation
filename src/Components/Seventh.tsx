@@ -7,24 +7,6 @@ interface Props {
 
 }
 
-const SlideVars = {
-    initial: {
-        x: 500,
-        opacity: 0,
-        scale: 0
-    },
-    animate: {
-        x: 0,
-        opacity: 1,
-        scale: 1
-    },
-    exit: {
-        x: -500,
-        opacity: 0,
-        scale: 0
-    }
-}
-
 const Seventh = (props: Props) => {
     // col 1
     const [show, setShow] = useState(false);
@@ -32,8 +14,15 @@ const Seventh = (props: Props) => {
 
     // col 2
     const [currSlide, setCurrSlide] = useState(1);
-    const prevSlide = () => setCurrSlide(prev => prev === 1 ? 1 : prev - 1);
-    const nextSlide = () => setCurrSlide(prev => prev === 3 ? 3 : prev + 1);
+    const [back, setBack] = useState(false);
+    const prevSlide = () => {
+        setBack(true);
+        setCurrSlide(prev => prev === 1 ? 1 : prev - 1);
+    };
+    const nextSlide = () => {
+        setBack(false);
+        setCurrSlide(prev => prev === 10 ? 10 : prev + 1);
+    };
 
     const vars = {
         initial: {
@@ -53,12 +42,40 @@ const Seventh = (props: Props) => {
         }
     }
 
+    const SlideVars = {
+        entry: (back: boolean) => ({
+            x: back ? -500 : 500,
+            opacity: 0,
+            scale: 0
+        }),
+        center: {
+            x: 0,
+            opacity: 1,
+            scale: 1,
+            transition: {
+                duration: .3
+            }
+        },
+        exit: (back: boolean) => ({
+            x: back ? 500 : -500,
+            opacity: 0,
+            scale: 0,
+            transition: {
+                duration: .3
+            }
+        })
+    }
+
+    useEffect(() => {
+        console.log("is rendering");
+    })
+
     return (
         <>
             <MotionWrapper
                 style={{
                     display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
+                    gridTemplateColumns: "1fr",
                     gap: "10px",
                     boxSizing: "border-box",
                     padding: "100px",
@@ -82,25 +99,22 @@ const Seventh = (props: Props) => {
                 </div>
 
                 {/* Col 2 */}
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    {/* <AnimatePresence> */}
-                        {[1, 2, 3].map(item =>
-                            currSlide === item ?
-                                <MotionBox key={item}
-                                    variants={SlideVars}
-                                    initial={"initial"}
-                                    animate={"animate"}
-                                    exit={"exit"}
-                                    style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-                                >
-                                    {item}
-                                </MotionBox>
-                                :
-                                null
-                        )}
-                    {/* </AnimatePresence> */}
-                    <button onClick={prevSlide}>Prev Please</button>
-                    <button onClick={nextSlide}>Next Please</button>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", position:"relative" }}>
+                    <AnimatePresence custom={back}>
+                        <MotionBox
+                            key={currSlide}
+                            custom={back}
+                            variants={SlideVars}
+                            initial={"entry"}
+                            animate={"center"}
+                            exit={"exit"}
+                            style={{ display: "flex", alignItems: "center", justifyContent: "center", position: "absolute", backgroundColor: "white" }}
+                        >
+                            {currSlide}
+                        </MotionBox>
+                    </AnimatePresence>
+                    <button onClick={prevSlide} style={{ width: "200px", position: "absolute", bottom: 30 }}>Prev Please</button>
+                    <button onClick={nextSlide} style={{ width: "200px", position: "absolute", bottom: 0 }}>Next Please</button>
                 </div>
             </MotionWrapper>
         </>
